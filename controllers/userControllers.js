@@ -1,9 +1,10 @@
 const User = require('../models/userModel');
-const CareerPath=require("../models/careerPathModel")
+const CareerPath = require("../models/careerPathModel")
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const transporter = require('../config/email');
+const Course = require("../models/courseModel");
 require('dotenv').config()
 
 // User signup controller
@@ -39,6 +40,59 @@ const signUp = async (req, res) => {
         res.redirect('/api/users/signup');  // Redirect back to signup page
     }
 };
+
+const adminPage = (req, res) => {
+    res.render('admin.ejs')
+}
+
+const addAdminPageData = async (req, res) => {
+    try {
+        // Extract data from the form
+        const { careerPath, careerField, specialization } = req.body;
+
+
+
+      
+        console.log(careerField)
+        console.log(specialization)
+
+
+        console.log(req.body)
+        const syllabusArray = careerField?.syllabus ? careerField.syllabus.split(',') : [];
+        const roadmapArray = specialization?.roadmap ? specialization.roadmap.split(',') : [];
+
+        // Create a new Course document
+        const newCourse = new Course({
+            name: careerField.name,
+            description: careerField.description,
+            syllabus: syllabusArray,
+            syllabus: syllabusArray,
+            careerField: {
+                name: specialization?.name,
+                roadmap: roadmapArray
+            }
+        });
+
+        // Save the Course document
+        await newCourse.save();
+
+        // Create a new Career Path document with a reference to the new course
+        const newCareerPath = new CareerPath({
+            name: careerPath?.name,
+            description: careerPath?.description,
+            courses: [newCourse._id]
+        });
+
+        // Save the Career Path document
+        await newCareerPath.save();;
+
+        // Redirect to the homepage or send a success message
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error adding career path:', error);
+        res.status(500).send('Server Error');
+    }
+}
 
 
 //Home page
@@ -89,12 +143,12 @@ const login = async (req, res) => {
     }
 };
 
-//Carrer Guid
+//Career Guid
 const Career = async (req, res) => {
     try {
         // Fetch all CareerPath data from the database
         const careerPaths = await CareerPath.find();
-  console.log(careerPaths)
+        console.log(careerPaths)
         // Pass the careerPaths data to the view
         res.render("CarrerGuid.ejs", { careerPaths });
     } catch (error) {
@@ -172,4 +226,4 @@ const resetPassword = async (req, res) => {
     }
 };
 
-module.exports = { Career, home, signUp, signupPage, login, loginPage, forgotPassword, forgotPasswordPage, resetPassword };
+module.exports = { addAdminPageData, adminPage, Career, home, signUp, signupPage, login, loginPage, forgotPassword, forgotPasswordPage, resetPassword };
