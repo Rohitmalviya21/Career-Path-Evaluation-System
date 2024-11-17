@@ -16,7 +16,6 @@
 
     .navbar {
         background-color: #223141 !important;
-
     }
 
     #logo_1 {
@@ -30,24 +29,21 @@
     #logo_2 {
         font-size: 25px;
         font-weight: bold;
-        color: white;
         color: #0a6fe9;
         font-family: 'Oswald', sans-serif;
     }
-
-
 
     .nav-item {
         display: inline-block;
         margin-left: 10px;
         margin-right: 15px;
-        font-size: 22px !important;
+        font-size: 16px !important;
     }
 
-
-
     .nav-link {
-        color: white !important;
+        font-family: 'Oswald', sans-serif;
+        text-decoration: none;
+        color: white;
         transition: all 0.3s linear;
     }
 
@@ -55,18 +51,21 @@
         color: red !important;
     }
 
-    .active {
-        color: rgb(203, 140, 117);
+    #active {
+        color: #D35400 !important;
     }
 
-    .container-fluid {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .nav-link {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
     }
 
-    .navbar-brand {
-        margin-left: 20px;
+    #links {
+        color: white;
+    }
+
+    #links:hover {
+        background-color: #D35400;
     }
 
     @media (max-width: 750px) {
@@ -97,16 +96,29 @@
 
                 <ul class="navbar-nav ms-auto  mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link " aria-current="page" href="/api/users/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="/api/users/contact">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="/api/users/about">About</a>
                     </li>
+                    <% if (isAuthenticated) { %>
+                        <% if (role==='admin' ) { %>
+                            <!-- Admin specific links -->
+                            <!-- <li class="nav-item"><a class="nav-link" href="/api/users/admin/msg">Msg</a></li> -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
+                            <% } else { %>
+                                <!-- User specific links -->
+                                <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
+                                <% } %>
+                                    <% } else { %>
+                                        <li class="nav-item"><a class="nav-link" href="/api/users/signup">SignUp</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="/api/users/login">SignIn</a></li>
+                                        <% } %>
                 </ul>
-
 
             </div>
         </div>

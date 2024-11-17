@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= careerPath.name %> - Courses
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        h6 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #444;
+            margin-top: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        ul li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #007bff;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar {
+            background-color: #223141 !important;
+        }
+
+        #logo_1 {
+            font-family: 'Oswald', sans-serif;
+            text-decoration: none;
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        #logo_2 {
+            font-size: 25px;
+            font-weight: bold;
+            color: #0a6fe9;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .nav-item {
+            display: inline-block;
+            margin-left: 10px;
+            margin-right: 15px;
+            font-size: 16px !important;
+        }
+
+        .nav-link {
+            font-family: 'Oswald', sans-serif;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s linear;
+        }
+
+        .nav-link:hover {
+            color: red !important;
+        }
+
+        #active {
+            color: #D35400 !important;
+        }
+
+        .nav-link {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        #links {
+            color: white;
+        }
+
+        #links:hover {
+            background-color: #D35400;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid ">
+
+            <a class="navbar-brand" href="#">
+                <span id="logo_1">Career</span>
+                <span id="logo_2">Path</span>
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse  navbar-collapse" id="navbarText">
+
+                <ul class="navbar-nav ms-auto  mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/api/users/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/users/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/users/about">About</a>
+                    </li>
+                    <% if (isAuthenticated) { %>
+                        <% if (role==='admin' ) { %>
+                            <!-- Admin specific links -->
+                            <!-- <li class="nav-item"><a class="nav-link" href="/api/users/admin/msg">Msg</a></li> -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
+                            <% } else { %>
+                                <!-- User specific links -->
+                                <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
+                                <% } %>
+                                    <% } else { %>
+                                        <li class="nav-item"><a class="nav-link" href="/api/users/signup">SignUp</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="/api/users/login">SignIn</a></li>
+                                        <% } %>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1>
+            <%= careerPath.name %> - Courses
+        </h1>
+        <p>
+            <%= careerPath.description %>
+        </p>
+        <h3>Courses</h3>
+        <div class="row">
+            <% careerPath.courses.forEach(course=> { %>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= course.name %>
+                            </h5>
+                            <p class="card-text">
+                                <%= course.description || 'No description available' %>
+                            </p>
+                            <h6>Syllabus:</h6>
+                            <ul>
+                                <% course.syllabus.forEach(item=> { %>
+                                    <li>
+                                        <%= item %>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <h6>Roadmap:</h6>
+                            <ul>
+                                <% course.careerField.roadmap.forEach(item=> { %>
+                                    <li>
+                                        <%= item %>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

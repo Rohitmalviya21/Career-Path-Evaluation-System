@@ -19,12 +19,11 @@
     <!--Custom CSS-->
 
     <link rel="stylesheet" href="CSS/login.css">
-    <title>Login Page</title>
+    <title>SignUp Page</title>
     <style>
         body {
-            background: url(../Images/blur.jpg);
-            background-size: cover;
-            background-repeat: no-repeat;
+            box-sizing: border-box;
+            background-image: linear-gradient(to right top, #eafaf1, #ebf9f3, #edf9f5, #eff8f6, #f1f7f6, #f1f7f6, #f1f6f6, #f1f6f6, #eff6f6, #ecf6f5, #eaf6f4, #e8f6f3);
         }
 
         .container {
@@ -243,24 +242,22 @@
                     <div class="card-body p-sm-5">
                         <div class="">
                             <!-- Show success message if available -->
-                            <% if (successMessage.length> 0) { %>
-                                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                                    <strong>
-                                        <%= successMessage %>
-                                    </strong>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                            <% if (errorMessage && errorMessage.length) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                    style="width: 500px; text-align: center; margin: auto; margin-top: 5px;">
+                                    Error: <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+
                                 </div>
                                 <% } %>
 
-                                    <!-- Show error message if available -->
-                                    <% if (errorMessage.length> 0) { %>
-                                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                                            <strong>
-                                                <%= errorMessage %>
-                                            </strong>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                aria-label="Close"></button>
+                                    <% if (successMessage && successMessage.length) { %>
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                            style="width: 500px; text-align: center; margin: auto; margin-top: 5px;">
+                                            <%= successMessage %>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
                                         </div>
                                         <% } %>
 
@@ -284,8 +281,7 @@
                                                     <div class="col-12">
                                                         <label for="mobileNumber" class="form-label">Mobile No.</label>
                                                         <input type="number" class="form-control" id="mobileNumber"
-                                                            name="mobile" placeholder="+919999999999"
-                                                            name="mobile" />
+                                                            name="mobile" placeholder="+919999999999" name="mobile" />
                                                     </div>
 
                                                     <div class="col-12">
@@ -325,6 +321,11 @@
 
             </div>
         </div>
+    </div>
+
+
+
+
 
 </body>
 

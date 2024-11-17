@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require("path");
 const DbConnetion = require('./config/DbConnection');
 const dotenv = require('dotenv');
 const userRoutes = require('./routers/userRoutes');
@@ -19,16 +20,28 @@ app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+
+
+app.set("views", path.join(__dirname, "AKSHA", "views"));
 app.set('views', __dirname + '/views'); // Set the views directory correctly
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
+
+app.use(express.static(path.join(__dirname, "AKSHA", "/public")));
+
 
 
 app.use((req, res, next) => {
     res.locals.successMessage = req.flash('success');
     res.locals.errorMessage = req.flash('error');
+    res.locals.isAuthenticated = req.session.token ? true : false;
+    res.locals.role = req.session.role || 'user'; 
     next();
 });
-//Database Connetion
+
+
+
+
+//Database Connection
 DbConnetion();
 
 
