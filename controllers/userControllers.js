@@ -1,10 +1,11 @@
 const User = require('../models/userModel');
-const CareerPath = require("../models/careerPathModel");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const transporter = require('../config/email');
-const Course = require("../models/courseModel");
+let CareerPath = require("../models/careerPathModel")
+let Course = require("../models/courseModel")
+let CareerField = require("../models/careerFiled")
 require('dotenv').config();
 
 // User signup controller
@@ -35,42 +36,6 @@ const adminPage = (req, res) => {
     res.render('admin.ejs', { successMessage: req.flash('success'), errorMessage: req.flash('error') });
 };
 
-// Add Admin Page Data (Career Path)
-const addAdminPageData = async (req, res) => {
-    try {
-        const { careerPath, careerField, specialization } = req.body;
-
-        const syllabusArray = careerField?.syllabus ? careerField.syllabus.split(',') : [];
-        const roadmapArray = specialization?.roadmap ? specialization.roadmap.split(',') : [];
-
-        const newCourse = new Course({
-            name: careerField.name,
-            description: careerField.description,
-            syllabus: syllabusArray,
-            careerField: {
-                name: specialization?.name,
-                roadmap: roadmapArray
-            }
-        });
-
-        await newCourse.save();
-
-        const newCareerPath = new CareerPath({
-            name: careerPath?.name,
-            description: careerPath?.description,
-            courses: [newCourse._id]
-        });
-
-        await newCareerPath.save();
-
-        req.flash('success', 'Career path and course details added successfully!');
-        res.redirect('/');
-    } catch (error) {
-        console.error('Error adding career path:', error);
-        req.flash('error', 'Failed to add career path. Please ensure all fields are filled correctly.');
-        res.redirect('/admin');
-    }
-};
 
 // Home page
 const home = (req, res) => {
@@ -141,31 +106,7 @@ const logout = (req, res) => {
 };
 
 
-// Career Guide
-const Career = async (req, res) => {
-    try {
-        const careerPaths = await CareerPath.find();
-        res.render("CarrerGuid.ejs", { careerPaths });
-    } catch (error) {
-        console.error("Error fetching career paths:", error);
-        req.flash('error', 'Unable to fetch career paths. Please try again later.');
-        res.redirect('/');
-    }
-};
 
-const course = async (req, res) => {
-    try {
-        // Find career path by ID and populate the courses
-        const careerPath = await CareerPath.findById(req.params.id).populate('courses');
-        if (!careerPath) {
-            return res.status(404).json({ message: 'Career Path not found' });
-        }
-        res.render('course.ejs', { careerPath }); // Render a view to display the career path and courses
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
-}
 // Forgot Password Page
 const forgotPasswordPage = (req, res) => {
     res.render("forgetPassword.ejs", { errorMessage: req.flash('error') });
@@ -200,7 +141,7 @@ const forgotPassword = async (req, res) => {
 
         transporter.sendMail(mailOptions, (error) => {
             if (error) {
-                console.log("err",error)
+                console.log("err", error)
                 req.flash('error', 'Failed to send password reset email.');
                 return res.redirect('/api/users/forgot-password');
             }
@@ -252,7 +193,120 @@ const about = (req, res) => {
 // Contact page
 const contact = (req, res) => res.render('contact.ejs');
 
+
+
+const addCareerPath = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { careerPathId, name, description } = req.body;
+        const careerPath = new CareerPath({ careerPathId, name, description });
+        await careerPath.save();
+        console.log("yes-careePath")
+        res.redirect("/api/users/admin")
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error adding Career Path.');
+    }
+}
+
+const addCourse = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { careerPathId, courseId, name, description } = req.body;
+        const course = new Course({ courseId, name, description });
+        await course.save();
+
+        // Link course to the career path
+        await CareerPath.updateOne(
+            { careerPathId },
+            { $push: { courses: course._id } }
+        );
+
+        console.log("yes-Courses")
+        res.redirect("/api/users/admin")
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error adding Course.');
+    }
+}
+
+const addCareerField = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { courseId, name, description, skills, avgSalary, demand, links } = req.body;
+        const careerField = new CareerField({
+            name,
+            description,
+            skills: skills ? skills.split(',') : [],
+            avgSalary,
+            demand
+            ,
+            links:links ? links.split(',') : [],
+        });
+        await careerField.save();
+
+        console.log("yesfilrf")
+        // Optionally link to the course (if applicable)
+        await Course.updateOne(
+            { courseId },
+            { $push: { relatedCourses: careerField._id } }
+        );
+
+
+        res.redirect("/api/users/admin")
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error adding Career Field.');
+    }
+}
+// Career Guide
+const Career = async (req, res) => {
+    try {
+        const careerPaths = await CareerPath.find();
+        res.render("CarrerGuid.ejs", { careerPaths });
+    } catch (error) {
+        console.error("Error fetching career paths:", error);
+        req.flash('error', 'Unable to fetch career paths. Please try again later.');
+        res.redirect('/');
+    }
+};
+
+const course = async (req, res) => {
+    try {
+        // Find career path by ID and populate the courses
+        const careerPath = await CareerPath.findById(req.params.id).populate('courses');
+        if (!careerPath) {
+            return res.status(404).json({ message: 'Career Path not found' });
+        }
+        res.render('course.ejs', { careerPath }); // Render a view to display the career path and courses
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+const relatedFiled = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        const course = await Course.findById(courseId).populate('relatedCourses');
+
+        console.log(courseId)
+        console.log(course, course)
+
+        if (!course) {
+            return res.status(404).send('Course not found');
+        }
+        res.render('relatedFiled.ejs', { relatedCourses: course.relatedCourses });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
 module.exports = {
-    logout, contact, about, addAdminPageData, adminPage, Career, home,course,
+    relatedFiled,
+    addCareerPath, addCourse, addCareerField,
+    logout, contact, about, adminPage, Career, home, course,
     signUp, signupPage, login, loginPage, forgotPassword, forgotPasswordPage, resetPassword
 };

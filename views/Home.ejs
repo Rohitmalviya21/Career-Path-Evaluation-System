@@ -89,7 +89,7 @@
             background:
                 linear-gradient(rgba(0, 0, 0, 0.5),
                     rgba(0, 0, 0, 0.5)),
-                url(../Images/hero/1.jpg);
+                url(./1.jpg);
 
             background-repeat: no-repeat;
             background-position: center;
@@ -168,7 +168,7 @@
                     <% if (isAuthenticated) { %>
                         <% if (role==='admin' ) { %>
                             <!-- Admin specific links -->
-                            <!-- <li class="nav-item"><a class="nav-link" href="/api/users/admin/msg"></a></li> -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/admin">Add Course</a></li>
                             <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
                             <% } else { %>
                                 <!-- User specific links -->
@@ -186,6 +186,7 @@
     </nav>
 
     <section class="hero">
+        <img src="">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-7 col-lg-7">

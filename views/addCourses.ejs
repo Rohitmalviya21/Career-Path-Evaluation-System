@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            width: 48%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        input,
+        textarea,
+        button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .career-fields {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- <h1>Admin Dashboard</h1> -->
+
+        <!-- Dashboard Sections -->
+        <div class="dashboard">
+            <!-- Left Section: Add Career Path -->
+            <div class="section">
+                <h2>Add Career Path</h2>
+                <form action="/admin/add-career-path" method="POST">
+                    <input type="text" name="name" placeholder="Career Path Name" required>
+                    <textarea name="description" placeholder="Description" required></textarea>
+                    <button type="submit">Add Career Path</button>
+                </form>
+            </div>
+
+            <!-- Right Section: Add Course -->
+            <div class="section">
+                <h2>Add Course</h2>
+                <form action="/admin/add-course" method="POST">
+                    <input type="hidden" name="careerPathId" value="<%= path._id %>">
+                    <input type="text" name="name" placeholder="Course Name" required>
+                    <textarea name="description" placeholder="Course Description"></textarea>
+                    <button type="submit">Add Course</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Career Field Section Below -->
+        <div class="career-fields section">
+            <h2>Add Career Field</h2>
+            <form action="/admin/add-career-field" method="POST">
+                <input type="hidden" name="courseId" value="<%= course._id %>">
+                <input type="text" name="name" placeholder="Career Field Name" required>
+                <textarea name="description" placeholder="Career Field Description"></textarea>
+                <input type="text" name="skills" placeholder="Skills (comma-separated)">
+                <input type="text" name="avgSalary" placeholder="Average Salary">
+                <input type="text" name="demand" placeholder="Demand">
+                <button type="submit">Add Career Field</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

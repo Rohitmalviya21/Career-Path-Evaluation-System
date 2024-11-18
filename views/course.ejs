@@ -142,6 +142,25 @@
         #links:hover {
             background-color: #D35400;
         }
+
+        .carrer-button {
+            margin-top: 5px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 3px;
+            background: rgba(45, 45, 240, 0.816);
+            color: white;
+            transition: all 0.3s linear;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 10px;
+
+        }
+
+        .carrer-button:hover {
+            cursor: pointer;
+            background-color: rgba(158, 93, 93, 0.576);
+        }
     </style>
 </head>
 
@@ -190,9 +209,12 @@
             </div>
         </div>
     </nav>
+
+
+
     <div class="container mt-5">
         <h1>
-            <%= careerPath.name %> - Courses
+            <%= careerPath.name %>
         </h1>
         <p>
             <%= careerPath.description %>
@@ -200,7 +222,7 @@
         <h3>Courses</h3>
         <div class="row">
             <% careerPath.courses.forEach(course=> { %>
-                <div class="col-md-4">
+                <div class="">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -209,25 +231,13 @@
                             <p class="card-text">
                                 <%= course.description || 'No description available' %>
                             </p>
-                            <h6>Syllabus:</h6>
-                            <ul>
-                                <% course.syllabus.forEach(item=> { %>
-                                    <li>
-                                        <%= item %>
-                                    </li>
-                                    <% }) %>
-                            </ul>
-                            <h6>Roadmap:</h6>
-                            <ul>
-                                <% course.careerField.roadmap.forEach(item=> { %>
-                                    <li>
-                                        <%= item %>
-                                    </li>
-                                    <% }) %>
-                            </ul>
+
+                            <a class="carrer-button" href="/api/users/course1/<%= course._id %>"
+                                class="card-link">Related Filed</a>
                         </div>
                     </div>
                 </div>
+
                 <% }) %>
         </div>
     </div>

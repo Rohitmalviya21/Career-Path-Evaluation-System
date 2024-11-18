@@ -15,6 +15,7 @@
             margin: 0;
             padding: 0;
         }
+
         .navbar {
             background-color: #223141 !important;
         }
@@ -82,7 +83,7 @@
 
         /* Card Styling */
         .career-card {
-            min-height: 200px;
+            min-height: 40px;
             background-color: #f8f9fa;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -146,12 +147,38 @@
         .col {
             padding: 15px;
         }
-        h1{
+
+        h1 {
             font-family: 'Oswald', sans-serif;
             margin: 10px;
             margin-bottom: 15px;
             font-weight: bold;
 
+
+        }
+
+        .carrer-button {
+            text-decoration: none;
+            background-color: #5b5b70;
+            border-radius: 5px;
+            color: white;
+            padding: 5px;
+            border: 1px solid black;
+            font-size: 13px;
+            transition: all 0.3s linear;
+        }
+
+        .card-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .carrer-button:hover {
+            background-color: rgb(186, 77, 77);
+            border-color: white;
         }
     </style>
 
@@ -187,6 +214,7 @@
                     <% if (isAuthenticated) { %>
                         <% if (role==='admin' ) { %>
                             <!-- Admin specific links -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/admin">Add Course</a></li>
                             <!-- <li class="nav-item"><a class="nav-link" href="/api/users/admin/msg">Msg</a></li> -->
                             <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
                             <% } else { %>
@@ -215,17 +243,9 @@
                                 <h5 class="card-title">
                                     <%= career.name %>
                                 </h5>
-                                <p class="card-text" id="description-<%= index %>">
-                                    <%= career.description.substring(0, 100) %>
-                                        <span class="more-text" style="display: none;">
-                                            <%= career.description.substring(100) %>
-                                        </span>
-                                        <% if (career.description.length> 100) { %>
-                                            <a href="javascript:void(0);" onclick="toggleDescription(<%= index %>)"
-                                                class="toggle-link">See More</a>
-                                            <% } %>
-                                </p>
-                                <a href="/api/users/career/<%= career._id %>" class="card-link">View Courses</a>
+
+                                <a class="carrer-button" href="/api/users/career/<%= career._id %>"
+                                    class="card-link">View Courses</a>
 
                             </div>
                         </div>

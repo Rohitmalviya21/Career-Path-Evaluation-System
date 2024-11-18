@@ -180,6 +180,7 @@
                     <% if (isAuthenticated) { %>
                         <% if (role==='admin' ) { %>
                             <!-- Admin specific links -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/admin">Add Course</a></li>
                             <!-- <li class="nav-item"><a class="nav-link" href="/api/users/admin/msg">Msg</a></li> -->
                             <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
                             <% } else { %>
@@ -217,7 +218,7 @@
                                 experience.<br> </p>
                         </div>
                         <div class="login">
-                            <a href="/api/users/login">
+                            <a href="/api/users/career-guide">
                                 <button type="button" class="btn btn-dark" id="btns">Let's Begin</button>
                             </a>
                         </div>

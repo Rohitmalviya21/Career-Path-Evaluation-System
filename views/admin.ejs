@@ -1,84 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
 
-<style>
-    body {
-        background-color: #F7F9F9;
-    }
 
-    .navbar {
-        background-color: #223141 !important;
-    }
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
-    #logo_1 {
-        font-family: 'Oswald', sans-serif;
-        text-decoration: none;
-        color: white;
-        font-size: 25px;
-        font-weight: bold;
-    }
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
 
-    #logo_2 {
-        font-size: 25px;
-        font-weight: bold;
-        color: #0a6fe9;
-        font-family: 'Oswald', sans-serif;
-    }
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            width: 48%;
+        }
 
-    .nav-item {
-        display: inline-block;
-        margin-left: 10px;
-        margin-right: 15px;
-        font-size: 16px !important;
-    }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
 
-    .nav-link {
-        font-family: 'Oswald', sans-serif;
-        text-decoration: none;
-        color: white;
-        transition: all 0.3s linear;
-    }
+        input,
+        textarea,
+        button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    .nav-link:hover {
-        color: red !important;
-    }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
 
-    #active {
-        color: #D35400 !important;
-    }
+        button:hover {
+            background: #0056b3;
+        }
 
-    .nav-link {
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 700;
-    }
+        .career-fields {
+            margin-top: 20px;
+        }
 
-    #links {
-        color: white;
-    }
 
-    #links:hover {
-        background-color: #D35400;
-    }
+        body {
+            box-sizing: border-box;
+            background-image: linear-gradient(to right top, #eafaf1, #ebf9f3, #edf9f5, #eff8f6, #f1f7f6, #f1f7f6, #f1f6f6, #f1f6f6, #eff6f6, #ecf6f5, #eaf6f4, #e8f6f3);
+        }
 
-    @media (max-width: 750px) {
+        .navbar {
+            background-color: #223141 !important;
+        }
+
+        #logo_1 {
+            font-family: 'Oswald', sans-serif;
+            text-decoration: none;
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        #logo_2 {
+            font-size: 25px;
+            font-weight: bold;
+            color: #0a6fe9;
+            font-family: 'Oswald', sans-serif;
+        }
+
         .nav-item {
             display: inline-block;
-            margin-left: 8px;
-            margin-right: 8px;
-            font-size: 17px !important;
+            margin-left: 10px;
+            margin-right: 15px;
+            font-size: 16px !important;
         }
-    }
-</style>
+
+        .nav-link {
+            font-family: 'Oswald', sans-serif;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s linear;
+        }
+    </style>
+</head>
 
 <body>
+
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid ">
 
@@ -107,7 +143,7 @@
                     <% if (isAuthenticated) { %>
                         <% if (role==='admin' ) { %>
                             <!-- Admin specific links -->
-                            <!-- <li class="nav-item"><a class="nav-link" href="/api/users/admin/msg">Msg</a></li> -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/admin">Add Course</a></li>
                             <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
                             <% } else { %>
                                 <!-- User specific links -->
@@ -124,63 +160,52 @@
         </div>
     </nav>
 
+
     <div class="container">
-        <div class="container my-4">
-            <!-- Add Career Path Form -->
-            <h1 class="mb-4">Add Career Path</h1>
-            <form action="/api/users/admin" method="POST">
-                <!-- Career Path Section -->
-                <h3 class="mb-3">Career Path</h3>
-                <div class="mb-3">
-                    <label for="careerPathName" class="form-label">Career Path Name:</label>
-                    <input type="text" class="form-control" id="careerPathName" name="careerPath[name]" required>
-                </div>
-                <div class="mb-3">
-                    <label for="careerPathDescription" class="form-label">Career Path Description:</label>
-                    <textarea class="form-control" id="careerPathDescription" name="careerPath[description]"
-                        required></textarea>
-                </div>
+        <h1>Admin Dashboard</h1>
 
-                <!-- Career Field Section -->
-                <h3 class="my-3">Career Field within Career Path</h3>
-                <div class="mb-3">
-                    <label for="careerFieldName" class="form-label">Career Field Name:</label>
-                    <input type="text" class="form-control" id="careerFieldName" name="careerField[name]" required>
-                </div>
-                <div class="mb-3">
-                    <label for="careerFieldDescription" class="form-label">Career Field Description:</label>
-                    <textarea class="form-control" id="careerFieldDescription"
-                        name="careerField[description]"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="syllabus" class="form-label">Syllabus (comma-separated):</label>
-                    <input type="text" class="form-control" id="syllabus" name="careerField[syllabus]">
-                </div>
+        <!-- Dashboard Sections -->
+        <div class="dashboard">
+            <!-- Left Section: Add Career Path -->
+            <div class="section">
+                <h2>Add Career Path</h2>
+                <form action="/api/users/career-path" method="POST">
+                    <input type="number" name="careerPathId" placeholder="CareerPathId" %>">
+                    <input type="text" name="name" placeholder="Career Path Name" required>
+                    <textarea name="description" placeholder="Description" required></textarea>
+                    <button type="submit">Add Career Path</button>
+                </form>
+            </div>
 
-                <!-- Specialization Section -->
-                <h3 class="my-3">Specialization within Career Field</h3>
-                <div class="mb-3">
-                    <label for="specializationName" class="form-label">Specialization Name:</label>
-                    <input type="text" class="form-control" id="specializationName" name="specialization[name]"
-                        required>
-                </div>
-                <div class="mb-3">
-                    <label for="specializationRoadmap" class="form-label">Specialization Roadmap
-                        (comma-separated):</label>
-                    <input type="text" class="form-control" id="specializationRoadmap" name="specialization[roadmap]">
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary">Add Career Path</button>
-            </form>
+            <!-- Right Section: Add Course -->
+            <div class="section">
+                <h2>Add Course</h2>
+                <form action="/api/users/course" method="POST">
+                    <input type="number" name="careerPathId" placeholder="CareerPath Id">
+                    <input type="number" name="courseId" placeholder="courseId">
+                    <input type=" text" name="name" placeholder="Course Name" required>
+                    <textarea name="description" placeholder="Course Description"></textarea>
+                    <button type="submit">Add Course</button>
+                </form>
+            </div>
         </div>
 
-
+        <!-- Career Field Section Below -->
+        <div class="career-fields section">
+            <h2>Add Career Field</h2>
+            <form action="/api/users/careerfield" method="POST">
+                <input type="number" name="courseId" placeholder="Course Id" required">
+                <input type="text" name="name" placeholder="Career Field Name" required>
+                <textarea name="description" placeholder="Career Field Description"></textarea>
+                <input type="text" name="skills" placeholder="Skills (comma-separated)">
+                <input type="text" name="avgSalary" placeholder="Average Salary">
+                <input type="text" name="demand" placeholder="Demand">
+                <input type="text" name="links" placeholder="links (comma-separated)">
+              
+                <button type="submit">Add Career Field</button>
+            </form>
+        </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

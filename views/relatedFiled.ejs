@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Related Career Fields</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    body {
+        box-sizing: border-box;
+        background-image: linear-gradient(to right top, #eafaf1, #ebf9f3, #edf9f5, #eff8f6, #f1f7f6, #f1f7f6, #f1f6f6, #f1f6f6, #eff6f6, #ecf6f5, #eaf6f4, #e8f6f3);
+    }
+
+    .navbar {
+        background-color: #223141 !important;
+    }
+
+    #logo_1 {
+        font-family: 'Oswald', sans-serif;
+        text-decoration: none;
+        color: white;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    #logo_2 {
+        font-size: 25px;
+        font-weight: bold;
+        color: #0a6fe9;
+        font-family: 'Oswald', sans-serif;
+    }
+
+    .nav-item {
+        display: inline-block;
+        margin-left: 10px;
+        margin-right: 15px;
+        font-size: 16px !important;
+    }
+
+    .nav-link {
+        font-family: 'Oswald', sans-serif;
+        text-decoration: none;
+        color: white;
+        transition: all 0.3s linear;
+    }
+
+    .nav-link:hover {
+        color: red !important;
+    }
+
+    #active {
+        color: #D35400 !important;
+    }
+
+    .nav-link {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+    }
+
+    #links {
+        color: white;
+    }
+
+    #links:hover {
+        background-color: #D35400;
+    }
+    .box1{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+</style>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid ">
+
+            <a class="navbar-brand" href="#">
+                <span id="logo_1">Career</span>
+                <span id="logo_2">Path</span>
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse  navbar-collapse" id="navbarText">
+
+                <ul class="navbar-nav ms-auto  mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/api/users/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/users/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/users/about">About</a>
+                    </li>
+                    <% if (isAuthenticated) { %>
+                        <% if (role==='admin' ) { %>
+                            <!-- Admin specific links -->
+                            <li class="nav-item"><a class="nav-link" href="/api/users/admin">Add Course</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
+                            <% } else { %>
+                                <!-- User specific links -->
+                                <li class="nav-item"><a class="nav-link" href="/api/users/logout">SignOut</a></li>
+                                <% } %>
+                                    <% } else { %>
+                                        <li class="nav-item"><a class="nav-link" href="/api/users/signup">SignUp</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="/api/users/login">SignIn</a></li>
+                                        <% } %>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Related Career Fields</h1>
+        <div class="row box1">
+            <% relatedCourses.forEach(field=> { %>
+                <div class="box">
+                    <div class="field-box">
+                        <h3>
+                            <%= field.name %>
+                        </h3>
+                        <p>
+                            <%= field.description || 'No description available' %>
+                        </p>
+                        <h6>Skills:</h6>
+                        <ul>
+                            <% field.skills.forEach(skill=> { %>
+                                <li>
+                                    <%= skill %>
+                                </li>
+                                <% }) %>
+                        </ul>
+                        <p><strong>Average Salary:</strong>
+                            <%= field.avgSalary || 'N/A' %>
+                        </p>
+                        <p><strong>Demand:</strong>
+                            <%= field.demand || 'N/A' %>
+                        </p>
+                        <h6>Study material:</h6>
+                        <ul>
+                            <% field.links?.forEach(skill=> { %>
+                                <li><a href="  <%= skill %></li>">
+                                        <%= skill %>
+                                </li></a>
+                                <%= skill %>
+                                    </li>
+                                    <% }) %>
+                        </ul>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
